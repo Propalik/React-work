@@ -67,6 +67,7 @@ const initialProducts = [
     imgSrc:
       "src/assets/products/product-7.jpg",
   },
+  
 ];
 
 function App() {
@@ -74,7 +75,7 @@ function App() {
   return ( 
       <section className="products">
     <div className="container">
-      <div className="flex flex-wrap justify-between">
+      <div className="flex flex-wrap justify-between gap-10">
         {!!initialProducts &&
           initialProducts.map((product) => (
             <Card key={product?.id} details={product} />

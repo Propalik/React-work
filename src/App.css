@@ -31,8 +31,8 @@ img {
 .container {
   width: 100%;
   max-width: 1280px;
-  margin-left: auto;
   padding: 0 12px;
+  margin-left: 300px;
 }
 
 /* растянутый контейнер */
