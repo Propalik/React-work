@@ -1,13 +1,18 @@
+import { Stepper } from "../Stepper/Stepper";
+
 /**
  * Компонент карточка
- * @property {string} props.title - Название карточки
- * @property {string} props.category - Категория карточки
- * @property {string} props.description - Описание карточки
- * @property {string} props.price - Цена карточки
- * @property {number} props.rating - Рейтинг карточки
- * @property {string} props.imgSrc - Путь к изображению
- * @returns {JSX.Element} Элемент JSX
-  * @param {function} props.onClick - Обработчик клика по карточке 
+ * @param {object} props - Свойства компонента.
+ * @param {object} props.details - Детали карточки.
+ * @param {string} props.details.id - Идентификатор карточки.
+ * @param {string} props.details.title - Название карточки.
+ * @param {string} props.details.category - Категория карточки (необязательно).
+ * @param {string} props.details.description - Описание карточки (необязательно).
+ * @param {string} [props.details.price] - Цена карточки (необязательно).
+ * @param {number} [props.details.rating] - Рейтинг карточки (необязательно).
+ * @param {string} props.details.imgSrc - Путь к изображению.
+ * @param {function} props.onClick - Обработчик клика по карточке (необязательно).
+ * @returns {JSX.Element} Элемент JSX.
  */
 
 export const Card = (props) => {
@@ -95,43 +100,12 @@ export const Card = (props) => {
         </p>
         {/* Cart Quantity */}
         {cartQuantity !== undefined && (
-          <div className="inline-flex items-center mt-2">
-            <button className="bg-white rounded-l border text-gray-600 hover:bg-gray-100 active:bg-gray-200 disabled:opacity-50 inline-flex items-center px-2 py-1 border-r border-gray-200">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M20 12H4"
-                />
-              </svg>
-            </button>
-            <div className="bg-gray-100 border-t border-b border-gray-100 text-gray-600 hover:bg-gray-100 inline-flex items-center px-4 py-1 select-none">
-              {cartQuantity}
-            </div>
-            <button className="bg-white rounded-r border text-gray-600 hover:bg-gray-100 active:bg-gray-200 disabled:opacity-50 inline-flex items-center px-2 py-1 border-r border-gray-200">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 4v16m8-8H4"
-                />
-              </svg>
-            </button>
-          </div>
+          <Stepper
+            minValue={1}
+            maxValue={10}
+            initialValue={cartQuantity}
+           
+          />
         )}
         {/* Add to Order Button */}
         <button
