@@ -1,22 +1,21 @@
 import { useState } from "react";
 
 // eslint-disable-next-line react/prop-types
-export const Stepper = ({ minValue = 1, maxValue = 10, initialValue, onQuantityUpdate }) => {
-    const [value, setValue] = useState(initialValue || minValue);
+export const Stepper = ({ minValue = 1, maxValue = 10, onQuantityUpdate }) => {
+    const [value, setValue] = useState(minValue);
   
     const handleBtnIncrement = () => {
       if (value < maxValue) {
-        const newValue = value + 1;
-        setValue(newValue);
-        onQuantityUpdate(newValue);
+       
+        setValue(value + 1);
+        onQuantityUpdate && onQuantityUpdate(value + 1);
       }
     };
   
     const handleBtnDecrement = () => {
       if (value > minValue) {
-        const newValue = value - 1;
-        setValue(newValue);
-        onQuantityUpdate(newValue);
+        setValue(value - 1);
+        onQuantityUpdate && onQuantityUpdate(value - 1);
       }
     };
   

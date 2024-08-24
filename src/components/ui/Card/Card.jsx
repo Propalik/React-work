@@ -21,9 +21,12 @@ export const Card = (props) => {
  
  
   // eslint-disable-next-line react/prop-types
-  const { onBtnClick } = props;
+  const { onBtnClick, onStepperUpdate, onToggleFavorite } = props;
   //обработчик клика
   const handleBtnClick = () => onBtnClick(id);
+
+  // тоже самое но для избранного
+  const handleFavorite = () => onToggleFavorite(id);
 
   
 
@@ -36,6 +39,7 @@ export const Card = (props) => {
         <div className="flex justify-between">
           {/* Favorite Button */}
           <button
+          onClick={handleFavorite}
             className={` ${isFavorite ? "text-red-500" : "text-white"}`}
           >
             <svg
@@ -103,7 +107,7 @@ export const Card = (props) => {
           <Stepper
             minValue={1}
             maxValue={10}
-            initialValue={cartQuantity}
+            onQuantityUpdate={(value) => onStepperUpdate(id, value)}
            
           />
         )}
