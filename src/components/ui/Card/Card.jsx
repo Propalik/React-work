@@ -26,12 +26,15 @@ export const Card = (props) => {
   const handleBtnClick = () => onBtnClick(id);
 
   // тоже самое но для избранного
-  const handleFavorite = () => onToggleFavorite(id);
-
+  const handleFavorite = (event) => {
+    event.stopPropagation(); // Предотвр. всплытие события
+    onToggleFavorite(id);
+  };
   
 
   return (
-    <div className="w-80 bg-white shadow rounded">
+    
+    <div   className="w-80 bg-white shadow rounded">
       <div
         className="h-48 w-full bg-gray-200 flex flex-col justify-between p-4 bg-cover bg-center"
         style={{ backgroundImage: `url(${imgSrc})` }}
