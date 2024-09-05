@@ -1,103 +1,55 @@
 import { Card } from "../components/ui/Card/Card.jsx";
-import { initialProducts } from "../../data.js";
-import { useState, useEffect } from "react";
+import useProductsStore from "../Store/useProductsStore.js";
 import { useNavigate } from "react-router-dom";
 
 const Cards = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // хук для роутинга
 
-  // Стейт для продуктов (начальное значение из data.js)
-  const [products, setProducts] = useState(initialProducts);
+  // Стор для работы с продуктами
+  const { products, setFavorite } = useProductsStore();
 
-  // useEffect(() => {
-  //   // Получаем данные из localStorage
-  //   const storedFavoriteProducts = localStorage.getItem("favorite");
-
-  //   // Если данные есть в localStorage, устанавливаем начальное состояние продуктов
-  //   if (storedFavoriteProducts) {
-  //     const favoriteProducts = JSON.parse(storedFavoriteProducts);
-
-  //     const updatedProducts = initialProducts?.map((product) => {
-  //       return {
-  //         ...product,
-  //         isFavorite: favoriteProducts?.includes(product?.id),
-  //       };
-  //     });
-  //     setProducts(updatedProducts);
-  //   } else {
-  //     // Иначе, используем начальные данные из data.js
-  //     setProducts(initialProducts);
-  //   }
-  // }, []);
-
-  const handleCardBtnClick = (id) =>{
+  // Обработчик клика по карточке (для открытия сайдбара, например)
+  const handleCardBtnClick = (id) => {
     navigate(`/cards/${id}`);
-    
-  }
-
-  const handleToggleFavorite = (id) => {
-    // Создании поверхностной копии массива
-    const currentProducts = [...products];
-
-    // Находим товара по id
-    const product = currentProducts?.find((product) => product?.id === id);
-
-    if (product) {
-      // Обновляем значение isFavorite у найденного товара
-      product.isFavorite = !product?.isFavorite;
-
-      // Обновляем стейт
-      setProducts(currentProducts);
-
-      // Получаем список избранных товаров
-      const favoriteProducts = currentProducts
-        ?.filter((product) => product?.isFavorite)
-        ?.map((product) => product?.id);
-
-      // Записываем избранные товары в localStorage
-      localStorage.setItem("favorite", JSON.stringify(favoriteProducts));
-    }
-
-    console.log("сохраненки", products);
   };
 
-/**
- * 
- * @param {string} id /айди карточки 
- * @param {string} newValue / новое значение степпера
- */
-  const handleStepperUppdate = (id, newValue) => {
-    const updateProducts = initialProducts?.map((product) => {
-      if (product?.id === id) {
-        return {...product, cartQuantity: newValue };
-      }
-      return product
-    })
-    console.log(updateProducts);
-    
-  }
+  /**
+   * 
+   * @param {string} id - ID карточки 
+   * @param {number} newValue - новое значение степпера
+   */
+  const handleStepperUpdate = (id, newValue) => {
+    // eslint-disable-next-line no-undef
+    set((state) => {
+      const updatedProducts = state?.products?.map((product) => {
+        if (product?.id === id) {
+          return { ...product, cartQuantity: newValue };
+        }
+        return product;
+      });
+      return { products: updatedProducts };
+    });
+  };
 
- 
-
-  return ( 
-      <section className="products">
-    <div className="container">
-      <div className="flex flex-wrap justify-between gap-10">
-        {!!products &&
-          products.map((product) => (
-            <Card
-            key={product?.id} 
-            details={product}
-            onBtnClick={handleCardBtnClick}
-            onStepperUpdate={handleStepperUppdate}
-            onToggleFavorite={handleToggleFavorite} />
-          ))}
+  return (
+    <section className="products">
+      <div className="container mx-auto px-4">
+        <div className="flex flex-wrap justify-between gap-10">
+          {!!products &&
+            products.map((product) => (
+              <Card
+                key={product?.id}
+                details={product}
+                onBtnClick={handleCardBtnClick}
+                onToggleFavorite={() => setFavorite(product?.id)}
+                onStepperUpdate={(newValue) => handleStepperUpdate(product?.id, newValue)}
+              />
+            ))}
+        </div>
+        <div></div>
       </div>
-    </div>
-  </section>
-  )
-  
-}
+    </section>
+  );
+};
 
-
-export default Cards
+export default Cards;
