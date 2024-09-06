@@ -9,6 +9,8 @@ const FavoritesList = () => {
   // Вызываем эту функцию
   const favoritesProducts = getFavoriteProducts();
 
+
+  //Вызов аллерта
   const handleToggleFavorite = (id) => {
     const confirmDeletion = window.confirm("Вы уверены, что хотите удалить этот товар из избранного?");
     
