@@ -17,10 +17,10 @@ import { Stepper } from "../Stepper/Stepper";
 
 export const Card = (props) => {
   // eslint-disable-next-line react/prop-types
-  const {title,  onBtnClick, category, description, price, imgSrc, isFavorite, id, cartQuantity } = props.details;
+  const {title, category, description, price, imgSrc, isFavorite, id, cartQuantity } = props.details;
  
   // eslint-disable-next-line react/prop-types
-  const {  onStepperUpdate, onToggleFavorite } = props;
+  const { onBtnClick, onStepperUpdate, onToggleFavorite } = props;
   //обработчик клика
   const handleBtnClick = () => onBtnClick(id);
 
