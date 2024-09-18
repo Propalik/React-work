@@ -1,14 +1,22 @@
 import { Card } from "../components/ui/Card/Card";
 import useProductsStore from "../Store/useProductsStore";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 
 const FavoritesList = () => {
+
+  const navigate = useNavigate(); // хук для роутинга
+
   // Достаем функцию для работы с сохраненками
   const { getFavoriteProducts, setFavorite } = useProductsStore();
 
   // Вызываем эту функцию
   const favoritesProducts = getFavoriteProducts();
 
+ // Обработчик клика по карточке
+ const handleCardBtnClick = (id) => {
+  navigate(`/cards/${id}`);
+};
 
   //Вызов аллерта
   const handleToggleFavorite = (id) => {
@@ -29,12 +37,13 @@ const FavoritesList = () => {
         >
           Вернуться карточкам
         </Link>
-        <div className="flex flex-wrap justify-between">
+        <div className="flex flex-wrap justify-between gap-10">
           {!!favoritesProducts &&
             favoritesProducts.map((product) => (
               <Card
                 key={product?.id}
                 details={product}
+                onBtnClick={handleCardBtnClick}
                 onToggleFavorite={handleToggleFavorite}
               />
             ))}
