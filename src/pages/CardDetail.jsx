@@ -6,25 +6,43 @@ const CardDetail = () => {
   const { id } = useParams();
   const { products, setFavorite } = useProductsStore();
 
-  // Находим карточку по id.
+  // Приведение id к числу для сопоставления с продуктами.
   const product = products?.find((product) => product?.id === id);
+
+  if (!product) {
+    return <p className="text-center text-gray-700">Product not found</p>; // обработка случая, когда продукта с таким id нет
+  }
 
   return (
     <section className="card-details py-8">
       <div className="container mx-auto p-4">
         <Link
           to="/cards"
-          className="text-gray-600 hover:text-gray-900 mb-8 inline-flex text-lg"
+          className="text-gray-600 hover:text-gray-900 mb-8 inline-flex items-center text-lg"
         >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6 mr-2"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
           Вернуться назад
         </Link>
-        <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg relative">
+        <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
           {/* Изображение карточки */}
           <div className="relative h-96 bg-gray-200 rounded-t-lg overflow-hidden">
             <img
               className="object-cover w-full h-full"
               src={product?.imgSrc}
-              alt={product?.title}
+              alt={product?.name}
             />
             <button
               className={`absolute top-2 left-2 p-2 rounded-full ${
@@ -44,7 +62,7 @@ const CardDetail = () => {
           {/* Детали карточки */}
           <div className="p-6">
             <h1 className="text-3xl font-bold text-gray-800 mb-4 text-center">
-              {product?.title}
+              {product?.name}
             </h1>
             <p className="text-gray-600 text-lg mb-4 text-center">
               {product?.description}
@@ -52,49 +70,59 @@ const CardDetail = () => {
             <p className="text-gray-600 text-md mb-2 text-center">
               Категория: {product?.category}
             </p>
+            {/* Рейтинг товара */}
+            <div className="flex justify-center mb-4">
+              <span className="text-yellow-500">
+                {`★`.repeat(Math.round(product?.rating))}
+              </span>
+              <span className="text-gray-600 ml-2">
+                ({product?.rating}/5)
+              </span>
+            </div>
             {/* Статус наличия */}
             <div className="flex justify-center mb-4">
               {product?.price && product?.price > 0 ? (
                 <span className="uppercase text-sm bg-green-100 px-2 py-1 border-green-500 border rounded text-green-700 font-medium select-none">
-                  In Stock
+                  В наличии
                 </span>
               ) : (
                 <span className="uppercase text-sm bg-red-100 px-2 py-1 border-red-500 border rounded text-red-700 font-medium select-none">
-                  Out of Stock
+                  Нет в наличии
                 </span>
               )}
             </div>
             {/* Цена */}
             <p className="text-2xl font-bold text-gray-800 text-center mb-4">
-              {product?.price && product?.price > 0 ? `$${product.price}` : "Not available"}
+              {product?.price && product?.price > 0
+                ? `$${product.price}`
+                : "Не доступно"}
             </p>
             {/* Кнопка добавления в корзину */}
             <div className="flex justify-center">
-            <button
-  className={`${
-    !product?.price || product?.price <= 0
-      ? "bg-gray-400 cursor-not-allowed"
-      : "bg-blue-500 hover:bg-blue-600"
-  } text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-300`}
-  disabled={!product?.price || product?.price <= 0}
->
-  Add to Cart
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="h-6 w-6 ml-2 inline-block"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-    />
-  </svg>
-</button>
-
+              <button
+                className={`${
+                  !product?.price || product?.price <= 0
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-gradient-to-r from-gray-700 to-gray-500 hover:from-gray-600 hover:to-gray-400"
+                } text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-300 flex items-center`}
+                disabled={!product?.price || product?.price <= 0}
+              >
+                Add to Cart
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 ml-2 inline-block"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                  />
+                </svg>
+              </button>
             </div>
           </div>
         </div>

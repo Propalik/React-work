@@ -27,12 +27,12 @@ const Home = () => {
   return (
     <div className="container mx-auto p-4">
       {/* Hero Section */}
-      <section className="hero bg-blue-500 text-white py-16 rounded-lg shadow-lg">
+      <section className="hero bg-gray-800 text-white py-16 rounded-lg shadow-lg">
         <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4">Welcome to Our Online Shop!</h1>
-          <p className="text-xl mb-6">Discover the best products at unbeatable prices.</p>
+          <h1 className="text-4xl font-bold mb-4">Welcome to Our Cozy Shop</h1>
+          <p className="text-xl mb-6">Find warm and delightful products for your home.</p>
           <button
-            className="bg-white text-blue-500 font-bold py-2 px-4 rounded hover:bg-gray-100"
+            className="bg-gray-700 text-white font-bold py-2 px-4 rounded hover:bg-gray-600 transition-colors"
             onClick={() => navigate("/cards")}
           >
             Start Shopping
@@ -58,16 +58,15 @@ const Home = () => {
       </section>
 
       {/* Popular Products Section */}
-      <section className="popular-products mt-12 p-4 bg-red-100 border-2 border-red-400 rounded-lg shadow-lg">
-        <h2 className="text-3xl font-bold mb-6 text-center text-red-800">
-          🔥 Popular Products
+      <section className="popular-products mt-12 p-4 bg-gray-200 border border-gray-400 rounded-lg shadow-lg">
+        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
+          🌟 Popular Products
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           {popularProducts.map((product) => (
             <div
               key={product.id}
-              className="product bg-white p-6 rounded-lg shadow hover:shadow-lg transition-transform transform hover:scale-105"
-              style={{ animation: 'burn 1s infinite alternate' }} // Добавляем анимацию
+              className="product bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-transform transform hover:scale-105"
             >
               <img
                 src={product.imgSrc}
@@ -77,7 +76,7 @@ const Home = () => {
               <h3 className="text-lg font-bold mb-2">{product.name}</h3>
               <p className="text-gray-600 mb-4">${product.price}</p>
               <button
-                className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 w-full"
+                className="bg-gray-700 text-white py-2 px-4 rounded hover:bg-gray-600 w-full"
                 onClick={() => navigate(`/cards/${product.id}`)}
               >
                 View Details
@@ -89,15 +88,15 @@ const Home = () => {
 
       {/* Favorite Products Section */}
       {favoriteProducts.length > 0 && (
-        <section className="favorite-products mt-12 p-4 bg-yellow-100 border-2 border-yellow-400 rounded-lg shadow-lg">
-          <h2 className="text-3xl font-bold mb-6 text-center text-yellow-800">
+        <section className="favorite-products mt-12 p-4 bg-gray-100 border border-gray-400 rounded-lg shadow-lg">
+          <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
             ❤️ Your Favorites
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
             {favoriteProducts.map((product) => (
               <div
                 key={product.id}
-                className="product bg-white p-6 rounded-lg shadow hover:shadow-lg"
+                className="product bg-white p-6 rounded-lg shadow-lg hover:shadow-xl"
               >
                 <img
                   src={product.imgSrc}
@@ -107,7 +106,7 @@ const Home = () => {
                 <h3 className="text-lg font-bold mb-2">{product.name}</h3>
                 <p className="text-gray-600 mb-4">${product.price}</p>
                 <button
-                  className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 w-full"
+                  className="bg-gray-700 text-white py-2 px-4 rounded hover:bg-gray-600 w-full"
                   onClick={() => navigate(`/cards/${product.id}`)}
                 >
                   View Details
@@ -117,21 +116,6 @@ const Home = () => {
           </div>
         </section>
       )}
-
-      {/* Customer Reviews */}
-      <section className="customer-reviews mt-12">
-        <h2 className="text-2xl font-bold mb-6 text-center">Customer Reviews</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {[1, 2, 3].map((review) => (
-            <div key={review} className="review bg-gray-100 p-6 rounded-lg shadow">
-              <p className="text-gray-600 mb-4">
-                Amazing products! Great quality and fast shipping. Highly recommend!
-              </p>
-              <p className="text-gray-800 font-bold">- Customer {review}</p>
-            </div>
-          ))}
-        </div>
-      </section>
     </div>
   );
 };

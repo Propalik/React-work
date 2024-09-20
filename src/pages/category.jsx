@@ -35,10 +35,15 @@ const Category = () => {
     <section className="products">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold mb-6 text-center">{category}</h2>
-        {/* Кнопка "Вернуться назад" */}
-        <Link to="/" className="inline-block mb-4 text-blue-500 hover:underline">
-          Вернуться на главную
-        </Link>
+   
+        <div className="mb-8">
+          <Link
+            to="/"
+            className="inline-flex items-center justify-center px-4 py-2 bg-indigo-500 text-white font-semibold rounded-md shadow-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75 transition duration-200 ease-in-out"
+          >
+            Вернуться на главную
+          </Link>
+        </div>
         <div className="flex flex-wrap justify-between gap-10">
           {filteredProducts.map((product) => (
             <Card

@@ -9,91 +9,68 @@ import { Stepper } from "../Stepper/Stepper";
 export const Card = (props) => {
   // eslint-disable-next-line react/prop-types
   const { title, category, description, price, imgSrc, isFavorite, id, cartQuantity } = props.details;
-  
   // eslint-disable-next-line react/prop-types
   const { onBtnClick, onStepperUpdate, onToggleFavorite } = props;
 
   const handleBtnClick = () => onBtnClick(id);
   const handleFavorite = (event) => {
-    event.stopPropagation(); // Предотвратить всплытие события
+    event.stopPropagation();
     onToggleFavorite(id);
   };
 
-  // Состояние для хранения количества
   const [quantity, setQuantity] = useState(cartQuantity || 1);
   
-  // Обработчик изменения количества
   const handleQuantityUpdate = (value) => {
     setQuantity(value);
     onStepperUpdate(id, value);
   };
 
-  // Общая цена
   const totalPrice = price ? (quantity * price).toFixed(2) : 0;
 
   return (
-    <div className="w-80 bg-white shadow rounded">
-      <div
-        className="h-48 w-full bg-gray-200 flex flex-col justify-between p-4 bg-cover bg-center"
-        style={{ backgroundImage: `url(${imgSrc})` }}
-      >
-        <div className="flex justify-between">
-          {/* Favorite Button */}
+    <div className="w-80 bg-gray-100 shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition-transform">
+      <div className="h-48 w-full flex flex-col justify-between p-4 relative" style={{ backgroundImage: `url(${imgSrc})`, backgroundSize: 'cover', backgroundPosition: 'center', filter: 'brightness(0.85)', borderRadius: '10px' }}>
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent z-0 rounded-lg"></div>
+        <div className="relative z-10 flex justify-between items-start">
           <button
             onClick={handleFavorite}
-            className={` ${isFavorite ? "text-red-500" : "text-white"}`}
+            className={`text-2xl ${isFavorite ? "text-red-600" : "text-gray-300"} hover:text-red-500 transition-all`}
           >
-            <svg className="w-6 h-6 fill-current" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-              <path d="m16 28c7-4.733 14-10 14-17 0-1.792-.683-3.583-2.05-4.95-1.367-1.366-3.158-2.05-4.95-2.05-1.791 0-3.583.684-4.949 2.05l-2.051 2.051-2.05-2.051c-1.367-1.366-3.158-2.05-4.95-2.05-1.791 0-3.583.684-4.949 2.05-1.367 1.367-2.051 3.158-2.051 4.95 0 7 7 12.267 14 17z"></path>
+            <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 32 32">
+              <path d="M16 28C7 23.267 0 18 0 11c0-1.792.683-3.583 2.05-4.95C3.417 4.683 5.208 4 7 4s3.583.683 4.95 2.05l4.05 4.05 4.05-4.05C21.417 4.683 23.208 4 25 4s3.583.683 4.95 2.05C31.317 7.417 32 9.208 32 11c0 7-7 12.267-14 17z"></path>
             </svg>
           </button>
-          {/* Add Button */}
-          <button onClick={handleBtnClick} className="text-white hover:text-blue-500">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <button onClick={handleBtnClick} className="text-white hover:text-teal-400 transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
             </svg>
           </button>
         </div>
-        {/* Stock Status */}
-        <div>
+        <div className="relative z-10 text-white text-sm font-semibold">
           {price && price > 0 ? (
-            <div>
-              <span className="uppercase text-xs bg-green-50 p-0.5 border-green-500 border rounded text-green-700 font-medium select-none">
-                in stock
-              </span>
-            </div>
+            <span className="px-2 py-1 bg-green-700 rounded-md">In Stock</span>
           ) : (
-            <div>
-              <span className="uppercase text-xs bg-red-50 p-0.5 border-red-500 border rounded text-red-700 font-medium select-none">
-                out of stock
-              </span>
-            </div>
+            <span className="px-2 py-1 bg-red-700 rounded-md">Out of Stock</span>
           )}
         </div>
       </div>
-      <div className="p-4 flex flex-col items-center">
-        {/* Category */}
-        {category && <p className="text-gray-400 font-light text-xs text-center">{category}</p>}
-        {/* Title */}
-        {title && <h1 className="text-gray-800 text-center mt-1">{title}</h1>}
-        {/* Description */}
-        {description && <p className="text-gray-600 text-sm text-center mt-1">{description}</p>}
-        {/* Total Price */}
-        <p className="text-center text-gray-800 mt-1">
+      <div className="p-6 bg-gray-50 rounded-b-lg">
+        {category && <p className="text-sm text-gray-600">{category}</p>}
+        {title && <h2 className="text-xl font-bold text-gray-800 mt-1">{title}</h2>}
+        {description && <p className="text-sm text-gray-700 mt-2">{description}</p>}
+        <p className="text-lg font-semibold text-gray-900 mt-3">
           {price && price > 0 ? `$${totalPrice}` : "Out of stock"}
         </p>
-        {/* Cart Quantity */}
         {cartQuantity !== undefined && (
           <Stepper
             minValue={1}
             maxValue={10}
-            value={quantity} // Установите текущее количество в степпер
+            value={quantity}
             onQuantityUpdate={handleQuantityUpdate}
           />
         )}
-        {/* Add to Order Button */}
         <button
-          className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 active:bg-blue-700 disabled:opacity-50 mt-4 w-full flex items-center justify-center"
+          className="mt-4 w-full bg-gradient-to-r from-gray-700 to-gray-500 text-white py-2 px-4 rounded-md shadow hover:bg-gradient-to-l transition-all flex items-center justify-center disabled:opacity-50"
           disabled={!price || price <= 0}
         >
           Add to order

@@ -2,8 +2,8 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import useProductsStore from "../../../Store/useProductsStore";
 /** Массив пунктов меню */
 const navItems = [
-  { name: "Home", path: "/" },
-  { name: "Cards", path: "/cards" },
+  { name: "Главная", path: "/" },
+  { name: "Товары", path: "/cards" },
 ];
 
 /**
@@ -43,16 +43,22 @@ const Header = () => {
         <div className="relative flex justify-between h-16">
           <nav className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
             <NavLink to="/" className="flex-shrink-0 flex items-center">
-              <img
-                className="block lg:hidden h-8 w-auto"
-                src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-                alt="Workflow"
-              />
-              <img
-                className="hidden lg:block h-8 w-auto"
-                src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg"
-                alt="Workflow"
-              />
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="40"
+                height="40"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-indigo-500 mr-2"
+              >
+                <path d="M12 2L2 7h20L12 2z" />
+                <path d="M2 7l10 5 10-5v10l-10 5-10-5V7z" />
+              </svg>
+              <span className="text-xl font-bold text-gray-800">React Shop</span>
             </NavLink>
             <div className="hidden sm:ml-8 sm:flex sm:space-x-8">
               {navItems?.map((item) => (
