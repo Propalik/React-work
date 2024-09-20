@@ -20,7 +20,7 @@ const Category = () => {
 
   // Обработчик изменения количества
   const handleStepperUpdate = (id, newValue) => {
-    set((state) => {
+    ((state) => {
       const updatedProducts = state.products.map((product) => {
         if (product.id === id) {
           return { ...product, cartQuantity: newValue };
