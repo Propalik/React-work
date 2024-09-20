@@ -6,19 +6,29 @@ const Home = () => {
   const navigate = useNavigate();
   const { products, getFavoriteProducts } = useProductsStore();
   
-  const [popularProducts, setPopularProducts] = useState(products.slice(0, 4));
-  const favoriteProducts = getFavoriteProducts();
+  const [popularProducts, setPopularProducts] = useState([]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      // Генерация нового списка популярных товаров случайным образом
+    // Функция для перемешивания товаров и выбора первых 4
+    const shuffleAndSetProducts = () => {
       const shuffledProducts = [...products].sort(() => Math.random() - 0.5);
       setPopularProducts(shuffledProducts.slice(0, 4));
+    };
+
+    // Начальная установка случайных товаров
+    shuffleAndSetProducts();
+
+    // Обновление каждые 15 секунд
+    const interval = setInterval(() => {
+      shuffleAndSetProducts();
     }, 15000);
 
+    // Очистка интервала при размонтировании компонента
     return () => clearInterval(interval);
   }, [products]);
 
+  const favoriteProducts = getFavoriteProducts();
+  
   // Обработчик перехода по категориям
   const handleCategoryClick = (category) => {
     navigate(`/category/${category}`);

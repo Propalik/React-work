@@ -57,7 +57,7 @@ export const Card = (props) => {
       <div className="p-6 bg-gray-50 rounded-b-lg">
         {category && <p className="text-sm text-gray-600">{category}</p>}
         {title && <h2 className="text-xl font-bold text-gray-800 mt-1">{title}</h2>}
-        {description && <p className="text-sm text-gray-700 mt-2">{description}</p>}
+        {description && <p className="text-sm text-gray-700 mt-2 line-clamp-1">{description}</p>}
         <p className="text-lg font-semibold text-gray-900 mt-3">
           {price && price > 0 ? `$${totalPrice}` : "Out of stock"}
         </p>

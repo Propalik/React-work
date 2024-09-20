@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
+
 body {
   font-family: "Open-Sans", "Inter", sans-serif;
 }
@@ -29,3 +32,4 @@ img {
 .products {
   padding: 40px 0;
 }
+
