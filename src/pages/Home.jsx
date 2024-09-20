@@ -1,4 +1,18 @@
+import { useNavigate } from "react-router-dom";
+import useProductsStore from "../Store/useProductsStore";
+
 const Home = () => {
+  const navigate = useNavigate();
+  const { products, getFavoriteProducts } = useProductsStore();
+
+  const popularProducts = products.slice(0, 4); // Пример популярных товаров
+  const favoriteProducts = getFavoriteProducts();
+
+  // Обработчик перехода по категориям
+  const handleCategoryClick = (category) => {
+    navigate(`/category/${category}`);
+  };
+
   return (
     <div className="container mx-auto p-4">
       {/* Hero Section */}
@@ -6,7 +20,10 @@ const Home = () => {
         <div className="text-center">
           <h1 className="text-4xl font-bold mb-4">Welcome to Our Online Shop!</h1>
           <p className="text-xl mb-6">Discover the best products at unbeatable prices.</p>
-          <button className="bg-white text-blue-500 font-bold py-2 px-4 rounded hover:bg-gray-100">
+          <button
+            className="bg-white text-blue-500 font-bold py-2 px-4 rounded hover:bg-gray-100"
+            onClick={() => navigate("/cards")} // Изменено на "/cards"
+          >
             Start Shopping
           </button>
         </div>
@@ -16,82 +33,95 @@ const Home = () => {
       <section className="categories mt-12">
         <h2 className="text-2xl font-bold mb-6 text-center">Shop by Categories</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-          <div className="category bg-gray-100 p-6 rounded-lg text-center hover:shadow-lg">
-            <h3 className="text-xl font-bold mb-2">Electronics</h3>
-            <p className="text-gray-600 mb-4">Latest gadgets and accessories</p>
-            <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-              Shop Now
-            </button>
-          </div>
-          <div className="category bg-gray-100 p-6 rounded-lg text-center hover:shadow-lg">
-            <h3 className="text-xl font-bold mb-2">Fashion</h3>
-            <p className="text-gray-600 mb-4">Trending styles and outfits</p>
-            <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-              Shop Now
-            </button>
-          </div>
-          <div className="category bg-gray-100 p-6 rounded-lg text-center hover:shadow-lg">
-            <h3 className="text-xl font-bold mb-2">Home & Garden</h3>
-            <p className="text-gray-600 mb-4">Everything for your home</p>
-            <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-              Shop Now
-            </button>
-          </div>
-          <div className="category bg-gray-100 p-6 rounded-lg text-center hover:shadow-lg">
-            <h3 className="text-xl font-bold mb-2">Sports</h3>
-            <p className="text-gray-600 mb-4">Gear for every sport</p>
-            <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-              Shop Now
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Products */}
-      <section className="featured-products mt-12">
-        <h2 className="text-2xl font-bold mb-6 text-center">Popular Products</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-          {/* Продукты можно отображать из массива данных */}
-          {[1, 2, 3, 4].map((product) => (
-            <div key={product} className="product bg-white p-6 rounded-lg shadow hover:shadow-lg">
-              <img
-                src={`/path-to-product-${product}-image.jpg`}
-                alt="Product Image"
-                className="w-full h-48 object-cover rounded-lg mb-4"
-              />
-              <h3 className="text-lg font-bold mb-2">Product {product}</h3>
-              <p className="text-gray-600 mb-4">$99.99</p>
-              <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 w-full">
-                View Details
-              </button>
+          {["Electronics", "Fashion", "Home & Garden", "Sports"].map((category) => (
+            <div
+              key={category}
+              className="category bg-gray-100 p-6 rounded-lg text-center hover:shadow-lg cursor-pointer"
+              onClick={() => handleCategoryClick(category)}
+            >
+              <h3 className="text-xl font-bold mb-2">{category}</h3>
+              <p className="text-gray-600 mb-4">Explore the latest in {category}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Promotions/Banners */}
-      <section className="promotions mt-12">
-        <h2 className="text-2xl font-bold mb-6 text-center">Current Promotions</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div className="promotion bg-green-500 text-white p-8 rounded-lg text-center">
-            <h3 className="text-2xl font-bold mb-2">50% OFF All Electronics!</h3>
+     {/* Popular Products Section */}
+<section className="popular-products mt-12 p-4 bg-red-100 border-2 border-red-400 rounded-lg shadow-lg">
+  <h2 className="text-3xl font-bold mb-6 text-center text-red-800">
+    🔥 Popular Products
+  </h2>
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+    {popularProducts.map((product) => (
+      <div
+        key={product.id}
+        className="product bg-white p-6 rounded-lg shadow hover:shadow-lg transition-transform transform hover:scale-105"
+        style={{ animation: 'burn 1s infinite alternate' }} // Добавляем анимацию
+      >
+        <img
+          src={product.imgSrc}
+          alt={product.name}
+          className="w-full h-48 object-cover rounded-lg mb-4"
+        />
+        <h3 className="text-lg font-bold mb-2">{product.name}</h3>
+        <p className="text-gray-600 mb-4">${product.price}</p>
+        <button
+          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 w-full"
+          onClick={() => navigate(`/cards/${product.id}`)}
+        >
+          View Details
+        </button>
+      </div>
+    ))}
+  </div>
+</section>
 
-          
-            
-            <p className="text-lg mb-4">  </p>
-            <button className="bg-white text-green-500 py-2 px-4 rounded hover:bg-gray-100">
-              Shop Electronics
-            </button>
-          </div>
-          <div className="promotion bg-yellow-500 text-white p-8 rounded-lg text-center">
-            <h3 className="text-2xl font-bold mb-2">Summer Fashion Sale</h3>
-            <p className="text-lg mb-4">Up to 70% off on selected items.</p>
-            <button className="bg-white text-yellow-500 py-2 px-4 rounded hover:bg-gray-100">
-              Shop Fashion
-            </button>
-          </div>
+<style jsx>{`
+  @keyframes burn {
+    0% {
+      transform: scale(1);
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+    }
+    100% {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(255, 165, 0, 0.8);
+    }
+  }
+`}</style>
+
+
+      {/* Favorite Products Section */}
+{favoriteProducts.length > 0 && (
+  <section className="favorite-products mt-12 p-4 bg-yellow-100 border-2 border-yellow-400 rounded-lg shadow-lg">
+    <h2 className="text-3xl font-bold mb-6 text-center text-yellow-800">
+      ❤️ Your Favorites
+    </h2>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+      {favoriteProducts.map((product) => (
+        <div
+          key={product.id}
+          className="product bg-white p-6 rounded-lg shadow hover:shadow-lg"
+        >
+          <img
+            src={product.imgSrc}
+            alt={product.name}
+            className="w-full h-48 object-cover rounded-lg mb-4"
+          />
+          <h3 className="text-lg font-bold mb-2">{product.name}</h3>
+          <p className="text-gray-600 mb-4">${product.price}</p>
+          <button
+            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 w-full"
+            onClick={() => navigate(`/cards/${product.id}`)}
+          >
+            View Details
+          </button>
         </div>
-      </section>
+      ))}
+    </div>
+  </section>
+)}
+
+
 
       {/* Customer Reviews */}
       <section className="customer-reviews mt-12">
