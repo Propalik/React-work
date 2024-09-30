@@ -4,6 +4,7 @@ import useProductsStore from "../../../Store/useProductsStore";
 const navItems = [
   { name: "Главная", path: "/" },
   { name: "Товары", path: "/cards" },
+  { name: "Admin", path: "/admin" },
 ];
 
 /**
