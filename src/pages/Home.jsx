@@ -4,27 +4,34 @@ import useProductsStore from "../Store/useProductsStore";
 
 const Home = () => {
   const navigate = useNavigate();
-  const { products, getFavoriteProducts } = useProductsStore();
+  const { products, getProducts, getFavoriteProducts } = useProductsStore();
   
   const [popularProducts, setPopularProducts] = useState([]);
 
   useEffect(() => {
-    // Функция для перемешивания товаров и выбора первых 4
-    const shuffleAndSetProducts = () => {
-      const shuffledProducts = [...products].sort(() => Math.random() - 0.5);
-      setPopularProducts(shuffledProducts.slice(0, 4));
-    };
+    // Загружаем продукты при монтировании компонента
+    getProducts();
+  }, [getProducts]);
 
-    // Начальная установка случайных товаров
-    shuffleAndSetProducts();
+  useEffect(() => {
+    if (products && products.length > 0) {
+      // Функция для перемешивания товаров и выбора первых 4
+      const shuffleAndSetProducts = () => {
+        const shuffledProducts = [...products].sort(() => Math.random() - 0.5);
+        setPopularProducts(shuffledProducts.slice(0, 4));
+      };
 
-    // Обновление каждые 15 секунд
-    const interval = setInterval(() => {
+      // Начальная установка случайных товаров
       shuffleAndSetProducts();
-    }, 15000);
 
-    // Очистка интервала при размонтировании компонента
-    return () => clearInterval(interval);
+      // Обновление каждые 15 секунд
+      const interval = setInterval(() => {
+        shuffleAndSetProducts();
+      }, 15000);
+
+      // Очистка интервала при размонтировании компонента
+      return () => clearInterval(interval);
+    }
   }, [products]);
 
   const favoriteProducts = getFavoriteProducts();
@@ -97,7 +104,7 @@ const Home = () => {
       </section>
 
       {/* Favorite Products Section */}
-      {favoriteProducts.length > 0 && (
+      {favoriteProducts && favoriteProducts.length > 0 && (
         <section className="favorite-products mt-12 p-4 bg-gray-100 border border-gray-400 rounded-lg shadow-lg">
           <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
             ❤️ Your Favorites

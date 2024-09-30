@@ -1,3 +1,4 @@
+import { useEffect, } from "react";
 import { Card } from "../components/ui/Card/Card.jsx";
 import useProductsStore from "../Store/useProductsStore.js";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +7,11 @@ const Cards = () => {
   const navigate = useNavigate(); // хук для роутинга
 
   // Стор для работы с продуктами
-  const { products, setFavorite } = useProductsStore();
+  const { products, getProducts, setFavorite, } = useProductsStore();
+
+  useEffect(() => {
+    getProducts();
+  }, [getProducts]);
 
   // Обработчик клика по карточке (для открытия сайдбара, например)
   const handleCardBtnClick = (id) => {

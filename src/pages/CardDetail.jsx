@@ -4,14 +4,23 @@ import useProductsStore from "../Store/useProductsStore";
 
 const CardDetail = () => {
   const { id } = useParams();
-  const { products, setFavorite } = useProductsStore();
+  const { products, getFavoriteProducts, setFavorite } = useProductsStore(); // Добавлено получение избранных товаров
+  const favoriteProducts = getFavoriteProducts(); // Получаем текущие избранные товары
 
   // Приведение id к числу для сопоставления с продуктами.
   const product = products?.find((product) => product?.id === id);
 
   if (!product) {
-    return <p className="text-center text-gray-700">Product not found</p>; // обработка случая, когда продукта с таким id нет
+    return <p className="text-center text-gray-700">Product not found</p>; // Обработка случая, когда продукта с таким id нет
   }
+
+  // Проверка, находится ли товар в избранном
+  const isFavorite = favoriteProducts.some((favProduct) => favProduct.id === product.id);
+
+  // Обработчик добавления/удаления товара из избранного
+  const handleToggleFavorite = () => {
+    setFavorite(product.id);
+  };
 
   return (
     <section className="card-details py-8">
@@ -46,9 +55,9 @@ const CardDetail = () => {
             />
             <button
               className={`absolute top-2 left-2 p-2 rounded-full ${
-                product?.isFavorite ? "text-red-500" : "text-white"
+                isFavorite ? "text-red-500" : "text-white"
               }`}
-              onClick={() => setFavorite(id)}
+              onClick={handleToggleFavorite} // Добавлен обработчик клика
             >
               <svg
                 className="w-8 h-8 fill-current"

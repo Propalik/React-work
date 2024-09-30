@@ -1,58 +1,53 @@
 import { create } from "zustand";
-import { initialProducts } from "../../data.js";
 
-/**
- * Стор для управления продуктами и состоянием сохраненных продуктов.
- */
 const useProductsStore = create((set) => {
-  // Загрузка избранных продуктов из localStorage.
+  let products;
+
   const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
-  // Инициализация продуктов с учетом сохраненных состояний
-  const products = initialProducts?.map((product) => ({
-    ...product,
-    isFavorite: storedFavorites?.includes(product?.id),
-  }));
+  const getProducts = async () => {
+    if (products) return; // Prevent fetching if products are already loaded
 
-  /**
-    Находит продукт по id.
-    @param {string} id - id продукта.
-    @returns {Object|null} Возвращает найденный продукт или null.
-    */
-  const getProductById = id => products?.find(product => product?.id === id) || null;
+    try {
+      const response = await fetch("http://localhost:3000/products/");
+      if (!response.ok) throw new Error("Failed to fetch products");
 
-  /**
-   * Переключает состояние сохраненного продукта по id.
-   * @param {string} id - id продукта.
-   */
+      const data = await response.json();
+      products = data.map((product) => ({
+        ...product,
+        isFavorite: storedFavorites.includes(product.id),
+      }));
+
+      set({ products });
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      // Optionally, handle the error in the UI
+    }
+  };
+
+  const getProductById = (id) => products?.find(product => product.id === id) || null;
+
   const setFavorite = (id) => {
-    // Обновляем продукты на странице, переключая состояние сохраненного продукта
-    const updatedProducts = products?.map((product) => {
-      if (product?.id === id) {
-        product.isFavorite = !product?.isFavorite;
+    const updatedProducts = products.map((product) => {
+      if (product.id === id) {
+        product.isFavorite = !product.isFavorite;
       }
       return product;
     });
 
-    // Обновляем id сохраненок для записи в localStorage
     const updatedFavorites = updatedProducts
-      ?.filter(product => product?.isFavorite)
-      ?.map(product => product?.id);
+      .filter(product => product.isFavorite)
+      .map(product => product.id);
 
     localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-
-    // Обновляем состояние.
     set({ products: updatedProducts });
-  }
+  };
 
-  /**
-   * Получает все сохраненные продукты.
-   * @returns {Array} Массив всех сохраненных продуктов.
-   */
-  const getFavoriteProducts = () => products?.filter(product => product?.isFavorite);
+  const getFavoriteProducts = () => products?.filter(product => product.isFavorite) || [];
 
   return {
     products,
+    getProducts,
     getProductById,
     setFavorite,
     getFavoriteProducts,
