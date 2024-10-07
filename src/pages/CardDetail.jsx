@@ -1,11 +1,14 @@
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom"; // Импортируйте useLocation
 import { Link } from "react-router-dom";
 import useProductsStore from "../Store/useProductsStore";
+import Alert from "../components/ui/Alert/Alert";
+import { useState, useEffect } from "react";
 
 const CardDetail = () => {
   const { id } = useParams();
-  const { products, getFavoriteProducts, setFavorite } = useProductsStore(); // Добавлено получение избранных товаров
+  const { products, getFavoriteProducts, setFavorite, addToCart } = useProductsStore(); // Добавьте addToCart
   const favoriteProducts = getFavoriteProducts(); // Получаем текущие избранные товары
+  const [alert, setAlert] = useState({ isOpen: false, title: "", message: "", variant: "" });
 
   // Приведение id к числу для сопоставления с продуктами.
   const product = products?.find((product) => product?.id === id);
@@ -20,7 +23,40 @@ const CardDetail = () => {
   // Обработчик добавления/удаления товара из избранного
   const handleToggleFavorite = () => {
     setFavorite(product.id);
+    setAlert({
+      isOpen: true,
+      title: isFavorite ? "Удалено из избранного" : "Добавлено в избранное",
+      message: isFavorite ? `${product.name} удален из избранного` : `${product.name} добавлен в избранное`,
+      variant: "success",
+    });
   };
+
+  // Обработчик добавления товара в корзину
+  const handleAddToCart = () => {
+    addToCart(product.id, 1); // Добавляем товар в корзину с количеством 1
+    setAlert({
+      isOpen: true,
+      title: "Товар добавлен в корзину",
+      message: `${product.name} был успешно добавлен в корзину.`,
+      variant: "success",
+    });
+  };
+
+  // Закрытие алерта и автоматическое его скрытие через секунду
+  const handleCloseAlert = () => {
+    setAlert({ ...alert, isOpen: false });
+  };
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    if (alert.isOpen) {
+      const timer = setTimeout(() => {
+        handleCloseAlert();
+      }, 2000); // Устанавливаем таймер на 1 секунду
+      return () => clearTimeout(timer); // Чистим таймер при размонтировании компонента
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [alert.isOpen]); // Запускаем эффект, когда состояние alert изменяется
 
   return (
     <section className="card-details py-8">
@@ -115,6 +151,7 @@ const CardDetail = () => {
                     : "bg-gradient-to-r from-gray-700 to-gray-500 hover:from-gray-600 hover:to-gray-400"
                 } text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-300 flex items-center`}
                 disabled={!product?.price || product?.price <= 0}
+                onClick={handleAddToCart} // Добавлен обработчик клика
               >
                 Add to Cart
                 <svg
@@ -136,6 +173,14 @@ const CardDetail = () => {
           </div>
         </div>
       </div>
+      <Alert
+          isOpen={alert.isOpen}
+          variant={alert.variant}
+          onClose={handleCloseAlert}
+          title={alert.title}
+        >
+          <p>{alert.message}</p>
+        </Alert>
     </section>
   );
 };

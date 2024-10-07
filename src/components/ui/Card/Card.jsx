@@ -1,5 +1,7 @@
-import { useState } from "react";
+/* eslint-disable react/prop-types */
+import { useState, } from "react";
 import { Stepper } from "../Stepper/Stepper";
+import useProductsStore from "../../../Store/useProductsStore";
 
 /**
  * Компонент карточка
@@ -7,10 +9,12 @@ import { Stepper } from "../Stepper/Stepper";
  * @returns {JSX.Element} Элемент JSX.
  */
 export const Card = (props) => {
-  // eslint-disable-next-line react/prop-types
   const { title, category, description, price, imgSrc, isFavorite, id, cartQuantity } = props.details;
-  // eslint-disable-next-line react/prop-types
   const { onBtnClick, onStepperUpdate, onToggleFavorite } = props;
+
+  const addToCart = useProductsStore((state) => state.addToCart);
+  const [quantity, setQuantity] = useState(cartQuantity || 1);
+  const [showAlert, setShowAlert] = useState(false);
 
   const handleBtnClick = () => onBtnClick(id);
   const handleFavorite = (event) => {
@@ -18,7 +22,11 @@ export const Card = (props) => {
     onToggleFavorite(id);
   };
 
-  const [quantity, setQuantity] = useState(cartQuantity || 1);
+  const handleAddToCart = () => {
+    addToCart(id, quantity); // Добавляем товар в корзину
+    setShowAlert(true); // Показать алерт
+    setTimeout(() => setShowAlert(false), 2000); // Скрыть алерт через 2 секунды
+  };
   
   const handleQuantityUpdate = (value) => {
     setQuantity(value);
@@ -29,7 +37,16 @@ export const Card = (props) => {
 
   return (
     <div className="w-80 bg-gray-100 shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition-transform">
-      <div className="h-48 w-full flex flex-col justify-between p-4 relative" style={{ backgroundImage: `url(${imgSrc})`, backgroundSize: 'cover', backgroundPosition: 'center', filter: 'brightness(0.85)', borderRadius: '10px' }}>
+      <div
+        className="h-48 w-full flex flex-col justify-between p-4 relative"
+        style={{
+          backgroundImage: `url(${imgSrc})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          filter: 'brightness(0.85)',
+          borderRadius: '10px'
+        }}
+      >
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent z-0 rounded-lg"></div>
         <div className="relative z-10 flex justify-between items-start">
           <button
@@ -69,7 +86,8 @@ export const Card = (props) => {
             onQuantityUpdate={handleQuantityUpdate}
           />
         )}
-        <button
+       <button
+          onClick={handleAddToCart}
           className="mt-4 w-full bg-gradient-to-r from-gray-700 to-gray-500 text-white py-2 px-4 rounded-md shadow hover:bg-gradient-to-l transition-all flex items-center justify-center disabled:opacity-50"
           disabled={!price || price <= 0}
         >
@@ -79,6 +97,14 @@ export const Card = (props) => {
           </svg>
         </button>
       </div>
+      {showAlert && (
+        <div className="absolute top-2 right-2 bg-green-500 text-white py-1 px-2 rounded flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 2l2 8h8l-6 4 2 8-6-4-6 4 2-8-6-4h8z" />
+          </svg>
+          <span>Товар добавлен в корзину!</span>
+        </div>
+      )}
     </div>
   );
 };
