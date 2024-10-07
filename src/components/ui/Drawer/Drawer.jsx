@@ -49,11 +49,14 @@ export const Drawer = ({
    * @param {Event} event - Нажатие клавиши Esc.
    */
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleKeyPress = (event) => {
-    if (event.key === "Escape") {
-      onClose();
-    }
-  };
+  const handleKeyPress = useCallback(
+    (event) => {
+      if (event?.key === "Escape") {
+        onClose();
+      }
+    },
+    [onClose]
+  );
 
   /**
    * Добавляет/удаляет обработчик клика за пределами компонента при его открытии/закрытии.

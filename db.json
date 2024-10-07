@@ -176,5 +176,28 @@
       "isFavorite": false,
       "cartQuantity": 1
     }
+  ],
+  "items": [
+    {
+      "name": "123",
+      "category": "123",
+      "price": "123",
+      "id": 1
+    },
+    {
+      "name": "123",
+      "category": "123",
+      "price": "123",
+      "id": 2
+    }
+  ],
+  "users": [
+    {
+      "text": "123",
+      "password": "123123123",
+      "role": "admin",
+      "id": 1
+    }
+   
   ]
 }
