@@ -25,7 +25,7 @@ const Cards = () => {
    */
   const handleStepperUpdate = (id, newValue) => {
     // eslint-disable-next-line no-undef
-    set((state) => {
+    ((state) => {
       const updatedProducts = state?.products?.map((product) => {
         if (product?.id === id) {
           return { ...product, cartQuantity: newValue };
