@@ -22,7 +22,6 @@ This project follows a custom structure that combines the following:
 - React
 - React Router
 - Zustand
-- Swiper
 - Vite
 
 ## В проекте реализовано:
