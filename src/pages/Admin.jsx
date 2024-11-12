@@ -1,6 +1,6 @@
 import useForm from "../hooks/useForm";
 import { useEffect, useState } from "react";
-import { Modal } from "../components/ui/Modal/Modal"; // Используем модальное окно вместо Drawer
+import { Modal } from "../components/ui/Modal/Modal"; 
 import Table from "../components/ui/Table/Table";
 import useItemsStore from "../store/useItemsStore";
 

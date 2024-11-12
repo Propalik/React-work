@@ -175,15 +175,5 @@ export const useAuth = () => {
     throw new Error("useAuth must be used within AuthProiver");
   }
 
-  // Для отладки
-  // const { user } = context;
-
-  // useEffect(() => {
-  //   if (user !== null) {
-  //     console.log("useAuth: User changed", user);
-  //   }
-  // }, [user]);
-  // Конец отладки
-
   return context;
 };

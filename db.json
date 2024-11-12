@@ -179,16 +179,76 @@
   ],
   "items": [
     {
-      "name": "123",
-      "category": "123",
-      "price": "123",
+      "name": "качели",
+      "category": "Home & Garden",
+      "price": "12",
+      "rating": "4",
+      "description": "просто качели",
       "id": 1
     },
     {
-      "name": "123",
-      "category": "123",
-      "price": "123",
+      "name": "деревянный стул",
+      "category": "Home & Garden",
+      "price": "25",
+      "rating": "5",
+      "description": "красивый деревянный стул",
       "id": 2
+    },
+    {
+      "name": "садовый стол",
+      "category": "Home & Garden",
+      "price": "50",
+      "rating": "4",
+      "description": "стол для пикника",
+      "id": 3
+    },
+    {
+      "name": "настольная лампа",
+      "category": "Electronics",
+      "price": "30",
+      "rating": "5",
+      "description": "стильная лампа для рабочего стола",
+      "id": 4
+    },
+    {
+      "name": "спортивный костюм",
+      "category": "Fashion",
+      "price": "40",
+      "rating": "5",
+      "description": "удобный костюм для занятий спортом",
+      "id": 6
+    },
+    {
+      "name": "кроссовки",
+      "category": "Fashion",
+      "price": "60",
+      "rating": "4",
+      "description": "удобные кроссовки для бега",
+      "id": 7
+    },
+    {
+      "name": "футболка",
+      "category": "Fashion",
+      "price": "20",
+      "rating": "5",
+      "description": "стильная футболка из хлопка",
+      "id": 8
+    },
+    {
+      "name": "дартс",
+      "category": "Sports",
+      "price": "35",
+      "rating": "4",
+      "description": "игра для всей семьи",
+      "id": 9
+    },
+    {
+      "name": "футбольный мяч",
+      "category": "Sports",
+      "price": "15",
+      "rating": "5",
+      "description": "мяч для футбольных игр",
+      "id": 10
     }
   ],
   "users": [
@@ -198,6 +258,5 @@
       "role": "admin",
       "id": 1
     }
-   
   ]
 }
